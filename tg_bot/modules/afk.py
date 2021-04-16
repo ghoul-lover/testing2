@@ -5,11 +5,11 @@ from telegram import MessageEntity, ParseMode
 from telegram.ext import Filters, MessageHandler, run_async
 
 from tg_bot import dispatcher
-from tg_bot.modules.disable import DisableAbleCommandHandler, DisableAbleRegexHandler
+from tg,_bot.modules.disable import DisableAbleCommandHandler, DisableAbleRegexHandler
 from tg_bot.modules.sql import afk_sql as sql
 from tg_bot.modules.users import get_user_id
 
-from tg_bot.modules.translations.strings import tld
+from marvel.modules.translations.strings import tld
 
 AFK_GROUP = 7
 AFK_REPLY_GROUP = 8
@@ -17,14 +17,8 @@ AFK_REPLY_GROUP = 8
 
 @run_async
 def afk(bot: Bot, update: Update):
-    user = update.effective_user
     chat = update.effective_chat  # type: Optional[Chat]
     args = update.effective_message.text.split(None, 1)
-    if not user:
-        return
-
-    if user.id in (777000, 1087968824):
-        return
     if len(args) >= 2:
         reason = args[1]
     else:
