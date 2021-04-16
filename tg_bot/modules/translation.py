@@ -1,14 +1,14 @@
 from emoji import UNICODE_EMOJI
 from google_trans_new import LANGUAGES, google_translator
 from telegram import ParseMode, Update
-from telegram.ext import CallbackContext, run_async
+from telegram.ext import run_async
 
 from tg_bot import dispatcher
 from tg_bot.modules.disable import DisableAbleCommandHandler
 
 
 @run_async
-def totranslate(update: Update, context: CallbackContext):
+def totranslate(bot: Bot, update: Update):
     message = update.effective_message
     problem_lang_code = []
     for key in LANGUAGES:
@@ -79,7 +79,7 @@ def totranslate(update: Update, context: CallbackContext):
             "Reply to messages or write messages from other languages ​​for translating into the intended language\n\n"
             "Example: `/tr en-ml` to translate from English to Malayalam\n"
             "Or use: `/tr ml` for automatic detection and translating it into Malayalam.\n"
-            "See [List of Language Codes](https://t.me/Goku_Updates/89) for a list of language codes.",
+            "See [List of Language Codes](http://t.me/OnePunchSupport/12823) for a list of language codes.",
             parse_mode="markdown",
             disable_web_page_preview=True)
     except ValueError:
