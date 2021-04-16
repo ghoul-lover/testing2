@@ -34,7 +34,7 @@ You can find the list of available commands with /help.
 
 HELP_STRINGS = """
 
-Hello! my name *{}*.
+Hello! my name *{}*[.](https://telegra.ph/file/914bcc3244b0114264a25.jpg) 
 
 *Main* commands available:
  - /start: start the bot
