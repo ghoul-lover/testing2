@@ -457,7 +457,7 @@ SAFEMODE_HANDLER = CommandHandler("safemode", safe_mode, pass_args=True)
 
 dispatcher.add_handler(ID_HANDLER)
 dispatcher.add_handler(GIFID_HANDLER)
-dispatcher.add_handler(INFO_HANDLER)
+#dispatcher.add_handler(INFO_HANDLER)
 dispatcher.add_handler(ECHO_HANDLER)
 dispatcher.add_handler(MD_HELP_HANDLER)
 dispatcher.add_handler(STATS_HANDLER)
