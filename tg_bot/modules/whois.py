@@ -46,6 +46,55 @@ def info(bot: Bot, update: Update, args: List[str]):
     del_msg = message.reply_text("searching info data of user....",parse_mode=ParseMode.HTML)
     
     
+    text = (f"<b>user information:</b>\n"
+            f"🆔️ID: <code>{user.id}</code>\n"
+            f"👤First Name: {html.escape(user.first_name)}")
+
+    if user.last_name:
+        text += f"\n👤Last Name: {html.escape(user.last_name)}"
+
+    if user.username:
+        text += f"\n👤Username: @{html.escape(user.username)}"
+
+    text += f"\n👤Permanent user link: {mention_html(user.id, 'link')}"
+
+    num_chats = sql.get_user_num_chats(user.id)
+    text += f"\n🌍Chat count: <code>{num_chats}</code>"
+
+    try:
+        user_member = chat.get_member(user.id)
+        if user_member.status == 'administrator':
+            result = requests.post(f"https://api.telegram.org/bot{TOKEN}/getChatMember?chat_id={chat.id}&user_id={user.id}")
+            result = result.json()["result"]
+            if "custom_title" in result.keys():
+                custom_title = result['custom_title']
+                text += f"\nThis user holds the title <b>{custom_title}</b> here."
+    except BadRequest:
+        pass
+
+    disaster_level_present = False
+
+    if user.id == OWNER_ID:
+        text += "\n🔥THE SKILL OF THIS PERSON IS'⚡RAIDER⚡'"
+        disaster_level_present = True
+    elif user.id in DEV_USERS:
+        text += "\n🔥THIS PERSON HAVE POWER OF '🗡ㅤSWORD MASTERㅤ🗡'"
+        disaster_level_present = True
+    elif user.id in SUDO_USERS:
+        text += "\n🔥THIS PERSON HAVE POWER OF'💥WIELDER💥'"
+        disaster_level_present = True
+    elif user.id in SUPPORT_USERS:
+        text += "\n🔥THIS PERSON HAVE POWER OF'AMATEUR'"
+        disaster_level_present = True
+    elif user.id in TIGER_USERS:
+        text += "\n🔥THIS PERSON HAVE POWER OF'KNIGHTS'"
+        disaster_level_present = True
+    elif user.id in WHITELIST_USERS:
+        text += "\n🔥THIS PERSON HAVE POWER OF'EXPLORER'"
+        disaster_level_present = True
+
+    if disaster_level_present:
+        text += ' [<a href="http://t.me/{}?start=disasters">?</a>]'.format(bot.username)
 
     text +="\n"
     text += "\nCAS banned: "
