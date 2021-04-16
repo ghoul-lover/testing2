@@ -45,60 +45,7 @@ def info(bot: Bot, update: Update, args: List[str]):
 
     del_msg = message.reply_text("searching info data of user....",parse_mode=ParseMode.HTML)
     
-    text = (f"<b>User Information:</b>\n"
-            f"ID: <code>{user.id}</code>\n"
-            f"Name: {html.escape(user.first_name)}")
-
-    if user.last_name:
-        text += f"\nLast Name: {html.escape(user.last_name)}"
-
-    if user.username:
-        text += f"\nUsername: @{html.escape(user.username)}"
-
-    text += f"\nPermanent user link: {mention_html(user.id, 'link🚪')}"
-
-    num_chats = sql.get_user_num_chats(user.id)
-    text += f"\nChat count: <code>{num_chats}</code>"
-    text += "\nNumber of profile pics: {}".format(bot.get_user_profile_photos(user.id).total_count)
-   
-    try:
-        user_member = chat.get_member(user.id)
-        if user_member.status == 'administrator':
-            result = requests.post(f"https://api.telegram.org/bot{TOKEN}/getChatMember?chat_id={chat.id}&user_id={user.id}")
-            result = result.json()["result"]
-            if "custom_title" in result.keys():
-                custom_title = result['custom_title']
-                text += f"\nAdmin title⚜️ <b>{custom_title}</b> here."
-    except BadRequest:
-        pass
-
     
-
-    
-    if user.id ==1286562476:
-        text += "\n🚶🏻‍♂️Uff,This person is sudo \n HE IS is the cutie!."
-
-    if user.id == OWNER_ID:
-        text += "\nThis person is my Owner\nI would never do anything against him!."
-        
-    elif user.id in DEV_USERS:
-        text += "\nThis person is my dev\nI would never do anything against him!."
-        
-    elif user.id in SUDO_USERS:
-        text += "\nThis person is one of my sudo users! " \
-                    "Nearly as powerful as my owner🕊so watch it.."
-        
-    elif user.id in SUPPORT_USERS:
-        text += "\nThis person is one of my support users! " \
-                        " He can gban you off the map."
-        
-  
-       
-    elif user.id in WHITELIST_USERS:
-        text += "\nThis person has been whitelisted! " \
-                        "That means I'm not allowed to ban/kick them."
-    
-
 
     text +="\n"
     text += "\nCAS banned: "
