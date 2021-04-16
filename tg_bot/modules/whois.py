@@ -23,7 +23,7 @@ import tg_bot.modules.sql.users_sql as sql
 import tg_bot.modules.helper_funcs.cas_api as cas
 
 @run_async
-def whois(bot: Bot, update: Update, args: List[str]):
+def info(bot: Bot, update: Update, args: List[str]):
     message = update.effective_message
     chat = update.effective_chat
     user_id = extract_user(update.effective_message, args)
@@ -42,22 +42,24 @@ def whois(bot: Bot, update: Update, args: List[str]):
 
     else:
         return
+
+    del_msg = message.reply_text("searching info data of user....",parse_mode=ParseMode.HTML)
     
     text = (f"<b>User Information:</b>\n"
-            f"🆔: <code>{user.id}</code>\n"
-            f"👤Name: {html.escape(user.first_name)}")
+            f"ID: <code>{user.id}</code>\n"
+            f"Name: {html.escape(user.first_name)}")
 
     if user.last_name:
-        text += f"\n🚹Last Name: {html.escape(user.last_name)}"
+        text += f"\nLast Name: {html.escape(user.last_name)}"
 
     if user.username:
-        text += f"\n♻️Username: @{html.escape(user.username)}"
+        text += f"\nUsername: @{html.escape(user.username)}"
 
-    text += f"\n☣️Permanent user link: {mention_html(user.id, 'link🚪')}"
+    text += f"\nPermanent user link: {mention_html(user.id, 'link🚪')}"
 
     num_chats = sql.get_user_num_chats(user.id)
-    text += f"\n🌐Chat count: <code>{num_chats}</code>"
-    text += "\n🎭Number of profile pics: {}".format(bot.get_user_profile_photos(user.id).total_count)
+    text += f"\nChat count: <code>{num_chats}</code>"
+    text += "\nNumber of profile pics: {}".format(bot.get_user_profile_photos(user.id).total_count)
    
     try:
         user_member = chat.get_member(user.id)
@@ -66,30 +68,34 @@ def whois(bot: Bot, update: Update, args: List[str]):
             result = result.json()["result"]
             if "custom_title" in result.keys():
                 custom_title = result['custom_title']
-                text += f"\n🛡This user holds the title⚜️ <b>{custom_title}</b> here."
+                text += f"\nAdmin title⚜️ <b>{custom_title}</b> here."
     except BadRequest:
         pass
 
-   
+    
+
+    
+    if user.id ==1286562476:
+        text += "\n🚶🏻‍♂️Uff,This person is sudo \n HE IS is the cutie!."
 
     if user.id == OWNER_ID:
-        text += "\n🚶🏻‍♂️Uff,This person is my Owner🤴\nI would never do anything against him!."
+        text += "\nThis person is my Owner\nI would never do anything against him!."
         
     elif user.id in DEV_USERS:
-        text += "\n🚴‍♂️Pling,This person is my dev🤷‍♂️\nI would never do anything against him!."
+        text += "\nThis person is my dev\nI would never do anything against him!."
         
     elif user.id in SUDO_USERS:
-        text += "\n🚴‍♂️Pling,This person is one of my sudo users! " \
+        text += "\nThis person is one of my sudo users! " \
                     "Nearly as powerful as my owner🕊so watch it.."
         
     elif user.id in SUPPORT_USERS:
-        text += "\n🚴‍♂️Pling,This person is one of my support users! " \
-                        "Not quite a sudo user, but can still gban you off the map."
+        text += "\nThis person is one of my support users! " \
+                        " He can gban you off the map."
         
   
        
     elif user.id in WHITELIST_USERS:
-        text += "\n🚴‍♂️Pling,This person has been whitelisted! " \
+        text += "\nThis person has been whitelisted! " \
                         "That means I'm not allowed to ban/kick them."
     
 
@@ -110,10 +116,19 @@ def whois(bot: Bot, update: Update, args: List[str]):
             text += "\n" + mod_info
     try:
         profile = bot.get_user_profile_photos(user.id).photos[0][-1]
-        bot.sendChatAction(chat.id, "upload_photo")
-        bot.send_photo(chat.id, photo=profile, caption=(text), parse_mode=ParseMode.HTML, disable_web_page_preview=True)
-    except IndexError:
-        update.effective_message.reply_text(text, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+        _file = bot.get_file(profile["file_id"])
+        _file.download(f"{user.id}.png")
 
-WHOIS_HANDLER = DisableAbleCommandHandler("whois", whois, pass_args=True)
-dispatcher.add_handler(WHOIS_HANDLER)
+        message.reply_document(
+         document=open(f"{user.id}.png", "rb"),
+         caption=(text),
+          parse_mode=ParseMode.HTML,
+          disable_web_page_preview=True)
+
+    except IndexError:
+        message.reply_text(text, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    finally:
+        del_msg.delete()
+INFO_HANDLER = DisableAbleCommandHandler("info", info, pass_args=True)
+dispatcher.add_handler(INFO_HANDLER)
+__handlers__=[INFO_HANDLER]
