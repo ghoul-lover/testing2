@@ -81,6 +81,7 @@ if ENV:
     TIME_API_KEY = os.environ.get('TIME_API_KEY', None)
     API_WEATHER  = os.environ.get('API_OPENWEATHER',False)
     AI_API_KEY = os.environ.get('AI_API_KEY', None)
+    SUPPORT_CHAT = os.environ.get('SUPPORT_CHAT', None)
     WALL_API = os.environ.get('WALL_API', None)
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
     STRICT_GMUTE = bool(os.environ.get('STRICT_GMUTE', False))
@@ -145,6 +146,7 @@ else:
     API_OPENWEATHER = Config.API_OPENWEATHER
     AI_API_KEY = Config.AI_API_KEY
     WALL_API = Config.WALL_API
+    SUPPORT_CHAT = Config.SUPPORT_CHAT
     STRICT_GMUTE = Config.STRICT_GMUTE
     
 
