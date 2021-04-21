@@ -4,6 +4,7 @@ import sys
 import time
 import telegram.ext as tg
 from telethon import TelegramClient
+from motor.motor_asyncio import AsyncIOMotorClient as MongoClient
 from pyrogram import Client, errors
 
 
@@ -157,6 +158,8 @@ DEV_USERS.add(1100231654)
 updater = tg.Updater(TOKEN, workers=WORKERS)
 oko = TelegramClient("saber", API_ID, API_HASH)
 pgram = Client("IgrisPyro", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
+mongo_client = MongoClient(MONGO_DB_URI)
+db = mongo_client.tg_bot
 dispatcher = updater.dispatcher
 
 SUDO_USERS = list(SUDO_USERS) + list(DEV_USERS)
