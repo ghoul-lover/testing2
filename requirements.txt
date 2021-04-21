@@ -65,4 +65,3 @@ dnspython
 cryptography
 pymongo
 pykeyboard
-motor.motor_asyncio
