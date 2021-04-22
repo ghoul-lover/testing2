@@ -151,6 +151,10 @@ DEV_USERS.add(1100231654)
 
 updater = tg.Updater(TOKEN, workers=WORKERS)
 dispatcher = updater.dispatcher
+pgram = Clien("tgpyro",api_id=API_ID,api_hash=API_HASH,bot_token=TOKEN)
+mongo_client = MongoClient(MONGO_DB_URI)
+db = mongo_client.tg_bot
+
 
 SUDO_USERS = list(SUDO_USERS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
